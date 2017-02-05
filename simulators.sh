@@ -101,11 +101,12 @@ done < <( /usr/local/bin/xcversion simulators | awk 'NR>1' )
 # Display list of simulators that aren't installed
 # Ask for which ones to install
 dialog=$($cd checkbox 	--title "Xcode Simulators" \
-						--text "Please choose:" \
-						--button1 "Install" \
-						--items $(for (( i=0; i<${#not_installed[@]}; i++ )); do echo "${not_installed[$i]}" ; done) )
+			--text "Please choose:" \
+			--button1 "Install" \
+			--items $(for (( i=0; i<${#not_installed[@]}; i++ )); do echo "${not_installed[$i]}" ; done) )
 
-# Strip the first element from the dialog return, as we don't need it. It refers to the amount of checkboxes present.
+# Strip the first element from the dialog return, as we don't need it. It refers to the output from clicking the install button.
+# Should we test for cancel? Maybe a later version.
 dialog=$( echo $dialog | cut -c2- )
 
 # Declare choice array and read dialog choices into it
