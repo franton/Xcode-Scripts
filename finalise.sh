@@ -3,7 +3,6 @@
 # Xcode finalisation script
 
 # Lots of code curtesy of the Munki wiki pages: https://github.com/munki/munki/wiki/Xcode
-# xcode-installer curtesy of https://github.com/KrauseFx/xcode-install/
 
 # Set up variables and functions here
 consoleuser="$(python -c 'from SystemConfiguration import SCDynamicStoreCopyConsoleUser; import sys; username = (SCDynamicStoreCopyConsoleUser(None, None, None) or [None])[0]; username = [username,""][username in [u"loginwindow", None, u""]]; sys.stdout.write(username + "\n");')"
@@ -37,6 +36,11 @@ done
 
 # disable version check for MobileDeviceDevelopment
 /usr/bin/defaults write /Library/Preferences/com.apple.dt.Xcode DVTSkipMobileDeviceFrameworkVersionChecking -bool true
+
+# alter authorisation database to allow installation of apple components without admin rights
+security authorizationdb read system.install.apple-software > /tmp/xcode.plist
+defaults write /tmp/xcode.plist rule -array authenticate-session-owner-or-admin
+security authorizationdb write system.instal.apple-software < /tmp.xcode.plist
 
 # Notify user all is done
 su -l "$consoleuser" -c " "'"'$tn'"'" -title "'"Xcode Install"'" -message "'"Xcode install completed!"'" "
