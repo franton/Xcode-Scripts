@@ -40,7 +40,7 @@ done
 # alter authorisation database to allow installation of apple components without admin rights
 security authorizationdb read system.install.apple-software > /tmp/xcode.plist
 defaults write /tmp/xcode.plist rule -array authenticate-session-owner-or-admin
-security authorizationdb write system.install.apple-software < /tmp.xcode.plist
+security authorizationdb write system.install.apple-software < /tmp/xcode.plist
 
 # Notify user all is done
 su -l "$consoleuser" -c " "'"'$tn'"'" -title "'"Xcode Install"'" -message "'"Xcode install completed!"'" "
