@@ -42,6 +42,10 @@ security authorizationdb read system.install.apple-software > /tmp/xcode.plist
 defaults write /tmp/xcode.plist rule -array authenticate-session-owner-or-admin
 security authorizationdb write system.install.apple-software < /tmp/xcode.plist
 
+# Rename Xcode so it has it's version number on the App. Allows us to have multiple xcode versions installed.
+version=$( defaults read /Applications/Xcode.app/Contents/Info.plist CFBundleShortVersionString )
+mv "/Applications/Xcode.app/" "/Applications/Xcode-$version.app"
+
 # Notify user all is done
 su -l "$consoleuser" -c " "'"'$tn'"'" -title "'"Xcode Install"'" -message "'"Xcode install completed!"'" "
 
