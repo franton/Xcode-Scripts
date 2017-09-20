@@ -44,7 +44,12 @@ security authorizationdb write system.install.apple-software < /tmp/xcode.plist
 
 # Rename Xcode so it has it's version number on the App. Allows us to have multiple xcode versions installed.
 version=$( defaults read /Applications/Xcode.app/Contents/Info.plist CFBundleShortVersionString )
-mv "/Applications/Xcode.app/" "/Applications/Xcode-$version.app"
+if [ ! -d "/Applications/Xcode-$version.app" ];
+then
+    mv "/Applications/Xcode.app/" "/Applications/Xcode-$version.app"
+else
+    rm -rf "/Applications/Xcode.app/"
+fi
 
 # Notify user all is done
 su -l "$consoleuser" -c " "'"'$tn'"'" -title "'"Xcode Install"'" -message "'"Xcode install completed!"'" "
